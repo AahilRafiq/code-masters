@@ -32,14 +32,14 @@ export const ProblemTopics = pgTable("ProblemTopics", {
   topic_id: integer("topic_id").references(() => Topics.id)
 });
 
-export const Testcases = pgTable("testcases", {
+export const Testcases = pgTable("Testcases", {
   id: serial("id").primaryKey(),
   problem_id: integer("problem_id").references(() => Problems.id),
   testcase: text("testcase"),
   expected_output: text("expected_output")
 });
 
-export const Submissions = pgTable("submissions", {
+export const Submissions = pgTable("Submissions", {
   id: serial("id").primaryKey(),
   user_id: integer("user_id").references(() => Users.id),
   problem_id: integer("problem_id").references(() => Problems.id),
