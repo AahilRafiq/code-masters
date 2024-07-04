@@ -10,7 +10,7 @@ async function startServer() {
 
         while(true) {
             const task = await redisClient.BRPOP('tasks',0)
-            processTask(JSON.stringify(task))
+            if(task) processTask(task?.element)
         }
 
     } catch(err) {
