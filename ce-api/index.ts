@@ -1,17 +1,13 @@
-import { createClient } from 'redis';
-import { processTask } from './helpers/processTask';
+import { ExecutionHandler } from './helpers/executionHanlder';
 
-const redisClient = createClient();
+const executionHanlder = ExecutionHandler.getInstance()
 
 async function startServer() {
     try {
-        await redisClient.connect()
+        await executionHanlder.connect()
         console.log('Server Started')
 
-        while(true) {
-            const task = await redisClient.BRPOP('tasks',0)
-            if(task) processTask(task?.element)
-        }
+        executionHanlder.handleExecutions()
 
     } catch(err) {
         console.log(err)
