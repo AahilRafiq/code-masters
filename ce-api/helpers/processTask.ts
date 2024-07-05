@@ -13,9 +13,14 @@ export async function processTask(taskRAW: string) {
         })
         const result = await res.json()
         result.task_id = task.task_id
+        result.success = true
         return result
 
     } catch (err) {
         console.log(err)
+        return {
+            task_id: task.task_id,
+            success: false,
+        }
     }
 }
