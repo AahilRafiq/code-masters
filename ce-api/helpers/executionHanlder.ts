@@ -9,7 +9,7 @@ export class ExecutionHandler {
     private sema: Sema
 
     private constructor() {
-        this.sema = new Sema(parseInt(process.env.MAX_ACTIVE_REQ) || 2)
+        this.sema = new Sema(parseInt(process.env.MAX_ACTIVE_REQ) || 10)
         this.redisClient = createClient()
     }
 
