@@ -5,12 +5,13 @@ const redisClient = createClient();
 await redisClient.connect();
 
 await redisClient.LPUSH('tasks',JSON.stringify({
+    task_id: "1",
     language: "python",
     version: "3.12.0",
     files: [
         {
             "name": "some.py",
-            "content": "print(1+70)"
+            "content": "prnt(1+70)"
         }
     ],
     stdin: "",

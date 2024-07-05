@@ -42,11 +42,13 @@ export class ExecutionHandler {
                     (async () => {
                         try {
                             await sema.acquire()
-                            await processTask(task.element)
+                            const result = await processTask(task.element)
+                            redisClient.publish('results', JSON.stringify(result))
                         } catch (err) {
                             console.log(err)
+                        } finally {
+                            sema.release()
                         }
-                        sema.release()
                     })()
                 }
             }
