@@ -5,6 +5,7 @@ const redisClient = createClient();
 await redisClient.connect();
 
 await redisClient.LPUSH('tasks',JSON.stringify({
+    task_id: "1",
     language: "c++",
     version: "10.2.0",
     files: [
