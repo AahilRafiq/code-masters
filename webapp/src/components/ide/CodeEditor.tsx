@@ -3,18 +3,20 @@
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import SelectLang from "@/components/ide/SelectLang"
+import { supportedLangs } from "@/lib/constants/supportedLangs"
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable"
 import InputOutput from "@/components/ide/InputOutput"
-import { useState } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 
 
 export default function () {
 
   const [code , setCode] = useState('')
+  const [lang , setLang] = useState(supportedLangs[0])
 
   function handleTabPress(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key === 'Tab') {
@@ -35,7 +37,7 @@ export default function () {
       className="p-6"
     >
       <ResizablePanel defaultSize={65} className="flex flex-col gap-2 p-2">
-        <TopBar />
+        <TopBar setLang={setLang}/>
         <div className="flex-grow bg-muted rounded-md p-4">
           <Textarea onKeyDown={handleTabPress} onChange={e=>setCode(e.target.value)} className="w-full font-mono min-h-full resize-none" placeholder="Enter your code here..." />
         </div>
@@ -48,10 +50,10 @@ export default function () {
   )
 }
 
-function TopBar() {
+function TopBar({setLang}:{setLang: Dispatch<SetStateAction<typeof supportedLangs[0]>>}) {
   return (
     <div className="flex items-center justify-between">
-      <SelectLang langs={['c++', 'python']} />
+      <SelectLang setLang={setLang} />
       <div className="flex flex-row gap-2">
         <div className="flex gap-2">
           <Button variant="outline">Run</Button>
