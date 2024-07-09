@@ -1,3 +1,5 @@
+'use client'
+
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import SelectLang from "@/components/ide/SelectLang"
@@ -7,8 +9,25 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable"
 import InputOutput from "@/components/ide/InputOutput"
+import { useState } from "react"
+
 
 export default function () {
+
+  const [code , setCode] = useState('')
+
+  function handleTabPress(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+    if (e.key === 'Tab') {
+      e.preventDefault()
+      const textarea = e.target as HTMLTextAreaElement
+      const start = textarea.selectionStart
+      const end = textarea.selectionEnd
+      const value = textarea.value
+      textarea.value = value.substring(0, start) + '  ' + value.substring(end)
+      textarea.selectionStart = textarea.selectionEnd = start + 2
+    }
+  }
+
   return (
 
     <ResizablePanelGroup
@@ -18,7 +37,7 @@ export default function () {
       <ResizablePanel defaultSize={65} className="flex flex-col gap-2 p-2">
         <TopBar />
         <div className="flex-grow bg-muted rounded-md p-4">
-          <Textarea className="w-full min-h-full resize-none" placeholder="Enter your code here..." />
+          <Textarea onKeyDown={handleTabPress} onChange={e=>setCode(e.target.value)} className="w-full font-mono min-h-full resize-none" placeholder="Enter your code here..." />
         </div>
       </ResizablePanel>
       <ResizableHandle withHandle />
