@@ -1,3 +1,5 @@
+// contains static data for now
+
 export default function () {
     return (
         <div className="bg-background p-6 md:p-8 lg:p-10 flex flex-col gap-4">
