@@ -57,7 +57,7 @@ export default function () {
               //@ts-ignore
               inlineSuggest: true,
               //@ts-ignore
-              fontSize: "16px",
+              fontSize: "14px",
               formatOnType: true,
               //@ts-ignore
               autoClosingBrackets: true,
