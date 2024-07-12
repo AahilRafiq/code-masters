@@ -6,19 +6,29 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
+import { Topics } from "@/db/schema"
+import { InferSelectModel } from "drizzle-orm"
+import { useState } from "react"
+import SelectTopics from "@/components/problems/new/SelectTopics"
+
+type Topic = InferSelectModel<typeof Topics>
 
 export default function Component() {
+
+    const [difficulty, setDifficulty] = useState<"easy" | "medium" | "hard">("easy")
+    const [topics, setTopics] = useState<Topic[]>([])
+
     return (
-        <div className="flex flex-col h-screen">
-            <main className="flex-1 flex flex-col max-w-4xl mx-auto p-6 md:p-10 space-y-6">
+        <div className="flex flex-col h-screen w-full mx-auto lg:max-w-3xl">
+            <main className="flex-1 flex flex-col w-full mx-auto p-6 md:p-10 space-y-6">
                 <div className="flex flex-col space-y-4">
                     <div className="flex items-center justify-between">
                         <h1 className="text-3xl font-bold">Create Coding Question</h1>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="flex flex-row gap-2">
 
                         {/* QUESTION NAME */}
-                        <div className="space-y-2">
+                        <div className="space-y-2 flex-grow">
                             <Label htmlFor="question-name">Question Name</Label>
                             <Input id="question-name" placeholder="Enter question name" />
                         </div>
@@ -38,24 +48,12 @@ export default function Component() {
                             </Select>
                         </div>
 
-                        {/* TOPIC */}
-                        <div className="space-y-2">
-                            <Label htmlFor="topic">Topic</Label>
-                            <Select>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select topic" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="algorithms">Algorithms</SelectItem>
-                                    <SelectItem value="data-structures">Data Structures</SelectItem>
-                                    <SelectItem value="programming-fundamentals">Programming Fundamentals</SelectItem>
-                                    <SelectItem value="databases">Databases</SelectItem>
-                                    <SelectItem value="web-development">Web Development</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
                     </div>
 
+                    {/* TOPIC */}
+                    <div className="space-y-2">
+                        <SelectTopics setTopicsToSubmit={setTopics} />
+                    </div>
                     {/* CODING QUESTION */}
                     <Tabs defaultValue="plain-text">
                         <TabsList>

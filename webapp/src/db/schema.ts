@@ -23,7 +23,7 @@ export const Problems = pgTable("Problems", {
 
 export const Topics = pgTable("Topics", {
   id: serial("id").primaryKey(),
-  topic: text("topic")
+  name: text("name")
 });
 
 export const ProblemTopics = pgTable("ProblemTopics", {
