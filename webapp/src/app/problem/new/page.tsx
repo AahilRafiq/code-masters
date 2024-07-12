@@ -10,6 +10,7 @@ import { Topics } from "@/db/schema"
 import { InferSelectModel } from "drizzle-orm"
 import { useState } from "react"
 import SelectTopics from "@/components/problems/new/SelectTopics"
+import Markdown from 'react-markdown'
 
 type Topic = InferSelectModel<typeof Topics>
 
@@ -17,6 +18,8 @@ export default function Component() {
 
     const [difficulty, setDifficulty] = useState<"easy" | "medium" | "hard">("easy")
     const [topics, setTopics] = useState<Topic[]>([])
+    const [question, setQuestion] = useState<string>("")
+    const [solution, setSolution] = useState<string>("")
 
     return (
         <div className="flex flex-col h-screen w-full mx-auto lg:max-w-3xl">
@@ -63,16 +66,13 @@ export default function Component() {
 
                         {/* CODING QUESTION RAW*/}
                         <TabsContent value="plain-text">
-                            <Textarea className="h-[400px] w-full resize-none" placeholder="Enter your coding question here..." />
+                            <Textarea value={question} onChange={e => setQuestion(e.target.value)} className="h-[400px] w-full resize-none" placeholder="Enter your coding question here..." />
                         </TabsContent>
 
                         {/* CODING QUESTION PREVIEW*/}
                         <TabsContent value="preview">
-                            <div className="h-[400px] w-full bg-muted rounded-md p-4">
-                                <h2 className="text-2xl font-bold mb-4">Coding Question</h2>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl eget ultricies tincidunt,nisl nisl aliquam nisl, eget aliquam nisl nisl eget nisl.
-                                </p>
+                            <div className="h-[400px]  w-full border-2 rounded-md p-4 overflow-y-auto">
+                                <Markdown className="prose prose-invert">{question}</Markdown>
                             </div>
                         </TabsContent>
                     </Tabs>
@@ -111,17 +111,13 @@ export default function Component() {
                         <TabsContent value="plain-text">
 
                             {/* SOLUTION RAW*/}
-                            <Textarea className="h-[400px] w-full resize-none" placeholder="Enter The Solution here..." />
+                            <Textarea value={solution} onChange={e => setSolution(e.target.value)} className="h-[400px] w-full resize-none" placeholder="Enter The Solution here..." />
                         </TabsContent>
 
                         {/* SOLUTION PREVIEW*/}
                         <TabsContent value="preview">
-                            <div className="h-[400px] w-full bg-muted rounded-md p-4 overflow-auto">
-                                <h2 className="text-2xl font-bold mb-4">Coding Question</h2>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl eget ultricies tincidunt,
-                                    nisl nisl aliquam nisl, eget aliquam nisl nisl eget nisl.
-                                </p>
+                            <div className="h-[400px] w-full border-2 rounded-md p-4 overflow-y-auto">
+                                <Markdown className="prose prose-invert">{solution}</Markdown>
                             </div>
                         </TabsContent>
                     </Tabs>
