@@ -16,8 +16,11 @@ export const Users = pgTable("Users", {
 
 export const Problems = pgTable("Problems", {
   id: serial("id").primaryKey(),
+  name: text("name"),
   statement: text("statement"),
   difficulty: difficultyEnum("difficulty"),
+  testcase: text("testcase"),
+  expected_output: text("expected_output"),
   explanation: text("explanation")
 });
 
@@ -30,13 +33,6 @@ export const ProblemTopics = pgTable("ProblemTopics", {
   id: serial("id").primaryKey(),
   problem_id: integer("problem_id").references(() => Problems.id),
   topic_id: integer("topic_id").references(() => Topics.id)
-});
-
-export const Testcases = pgTable("Testcases", {
-  id: serial("id").primaryKey(),
-  problem_id: integer("problem_id").references(() => Problems.id),
-  testcase: text("testcase"),
-  expected_output: text("expected_output")
 });
 
 export const Submissions = pgTable("Submissions", {

@@ -11,15 +11,37 @@ import { InferSelectModel } from "drizzle-orm"
 import { useState } from "react"
 import SelectTopics from "@/components/problems/new/SelectTopics"
 import Markdown from 'react-markdown'
+import { problemDifficulty } from "@/types/difficultyEnum"
+import { useRouter } from "next/navigation"
+import { createNewProblem } from "@/actions/problems/createNewProblem"
+import { useToast } from "@/components/ui/use-toast"
+import { displayErrorToast , displayNormalToast } from "@/lib/functions/actionResponseHelpers"
 
 type Topic = InferSelectModel<typeof Topics>
 
 export default function Component() {
 
-    const [difficulty, setDifficulty] = useState<"easy" | "medium" | "hard">("easy")
+    const {toast} = useToast()
+    const router = useRouter()
+    const [difficulty, setDifficulty] = useState<string>("easy")
     const [topics, setTopics] = useState<Topic[]>([])
+    const [name, setName] = useState<string>("")
     const [question, setQuestion] = useState<string>("")
     const [solution, setSolution] = useState<string>("")
+    const [input, setInput] = useState<string>("")
+    const [output, setOutput] = useState<string>("")
+
+    async function handleCreate() {
+        const problemDifficulty = difficulty as "easy" | "medium" | "hard"
+        const res = await createNewProblem(name, problemDifficulty, topics, question, input, output, solution)
+        if (res.success) {
+            displayNormalToast(toast,'Success', "Problem created successfully")
+            router.push("/problems")
+        } else {
+            alert(res.message)
+            displayErrorToast(toast, res.message!)
+        }
+    }
 
     return (
         <div className="flex flex-col h-screen w-full mx-auto lg:max-w-3xl">
@@ -33,20 +55,20 @@ export default function Component() {
                         {/* QUESTION NAME */}
                         <div className="space-y-2 flex-grow">
                             <Label htmlFor="question-name">Question Name</Label>
-                            <Input id="question-name" placeholder="Enter question name" />
+                            <Input onChange={e=>setName(e.target.value)} value={name} id="question-name" placeholder="Enter question name" />
                         </div>
 
                         {/* DIFFICULTY */}
                         <div className="space-y-2">
                             <Label htmlFor="difficulty">Difficulty</Label>
-                            <Select>
+                            <Select onValueChange={(value) => setDifficulty(value)}>
                                 <SelectTrigger>
                                     <SelectValue placeholder="Select difficulty" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="easy">Easy</SelectItem>
-                                    <SelectItem value="medium">Medium</SelectItem>
-                                    <SelectItem value="hard">Hard</SelectItem>
+                                    <SelectItem value={problemDifficulty.easy}>Easy</SelectItem>
+                                    <SelectItem value={problemDifficulty.medium}>Medium</SelectItem>
+                                    <SelectItem value={problemDifficulty.hard}>Hard</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
@@ -86,6 +108,8 @@ export default function Component() {
                             <Label htmlFor="test-cases">Testcase</Label>
                             <Textarea
                                 id="test-cases"
+                                value={input}
+                                onChange={e => setInput(e.target.value)}
                                 className="h-[150px] w-full resize-none"
                                 placeholder="Enter the test cases entire input..."
                             />
@@ -96,6 +120,8 @@ export default function Component() {
                             <Label htmlFor="expected-output">Expected Output</Label>
                             <Textarea
                                 id="expected-output"
+                                value={output}
+                                onChange={e => setOutput(e.target.value)}
                                 className="h-[150px] w-full resize-none"
                                 placeholder="Enter the expected output here..."
                             />
@@ -128,8 +154,8 @@ export default function Component() {
                 <div className="max-w-4xl mx-auto p-4 md:p-6 flex items-center justify-between">
                     <p className="text-sm text-muted-foreground">&copy; 2024 Your Company. All rights reserved.</p>
                     <div className="flex items-center space-x-2">
-                        <Button variant="ghost">Cancel</Button>
-                        <Button>Save</Button>
+                        <Button onClick={()=>router.push('/')} variant="ghost">Cancel</Button>
+                        <Button onClick={handleCreate}>Create</Button>
                     </div>
                 </div>
             </footer>
