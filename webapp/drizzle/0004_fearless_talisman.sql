@@ -1,0 +1,1 @@
+ALTER TABLE "Topics" ALTER COLUMN "name" SET NOT NULL;

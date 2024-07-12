@@ -29,6 +29,13 @@
       "when": 1720799665631,
       "tag": "0003_familiar_tomas",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1720801697097,
+      "tag": "0004_fearless_talisman",
+      "breakpoints": true
     }
   ]
 }
